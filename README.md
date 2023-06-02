@@ -1,21 +1,46 @@
-Congrats! 🎉
+Certainly! Here's a Python function that implements the method I described earlier to reduce the token count of prompt text:
 
-If you made it here then you have passed our initial screening. Welcome to second round of your interview.
+```python
+import spacy
 
-During this round, we will evaluate your ability to handle new and intricate learning challenges. Choose one of the following assignments. But don't spend no more than 12 hours working on it. After 12 hours, please submit your progress, regardless of the extent of completion. Feel free to generate code using AI tools and chat apps like chatgpt, bing chat, code copilots, codium etc.
+def reduce_token_count(prompt_text, max_token_count):
+    # Load the spaCy language model
+    nlp = spacy.load('en_core_web_sm')
+    
+    # Tokenize the prompt text
+    doc = nlp(prompt_text)
+    
+    # Calculate the current token count
+    current_token_count = len(doc)
+    
+    # Check if the prompt text is already within the token limit
+    if current_token_count <= max_token_count:
+        return prompt_text
+    
+    # Initialize the reduced prompt text
+    reduced_prompt_text = ''
+    
+    # Iterate through each token in the prompt text
+    for token in doc:
+        # Check if adding the token will exceed the token limit
+        if len(reduced_prompt_text) + len(token.text) + 1 <= max_token_count:
+            # Add the token to the reduced prompt text
+            reduced_prompt_text += token.text_with_ws
+        else:
+            break  # Stop adding tokens if the limit is reached
+    
+    return reduced_prompt_text.strip()
 
-To access the assignment details, kindly visit the ***#second-round*** channel . If you have any questions ask in the ***#interview-doubts*** channel.
+# Example usage
+prompt = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed convallis ultricies lacus."
+max_token_count = 10
 
-Discord link -<https://discord.gg/uTYkFDS8>
+reduced_prompt = reduce_token_count(prompt, max_token_count)
+print(reduced_prompt)
+```
 
-To create a pull request for a public git repo, you need to follow these steps:
+In this code, we use the spaCy library to tokenize the prompt text into individual words or tokens. We then iterate through each token and check if adding it to the reduced prompt text will exceed the maximum token count. If not, we add the token to the reduced prompt text. Once the token limit is reached, we stop adding tokens and return the reduced prompt text.
 
--   Fork the repo that you want to contribute to. This will create a copy of the repo under your own GitHub account. You can fork a repo by clicking the **Fork** button on the top right corner of the repo page.
--   Clone your forked repo to your local machine. You can do this by running **`git clone <https://github.com/your-username/repo-name.git`**> in your terminal, where **`your-username`** is your GitHub username and **`repo-name`** is the name of the repo you forked.
--   Create a new branch for your changes. You can do this by running **`git checkout -b branch-name`**, where **`branch-name`** is a descriptive name for your branch.
--   Make your changes in the new branch. You can use any code editor or IDE that you prefer. You can also use GitHub Desktop to manage your changes.
--   Add and commit your changes to the new branch. You can do this by running **`git add .`** to stage all your changes and **`git commit -m "message"`** to commit them with a message, where **`message`** is a brief summary of what you did.
--   Push your changes to your forked repo on GitHub. You can do this by running **`git push origin branch-name`**, where **`branch-name`** is the name of your branch.
--   Create a pull request from your forked repo to the original repo. You can do this by going to your forked repo on GitHub and clicking the **Compare & pull request** button. This will open a page where you can review your changes and add a title and a description for your pull request. You can also link your pull request to an issue if there is one related to your changes. Then click **Create pull request** to submit it.
+Note that this code focuses on reducing the token count by truncating the prompt text, rather than applying more sophisticated techniques like summarization. Adjust the `max_token_count` variable to control the desired token limit.
 
-That's it! You have created a pull request for a public git repo. Now you need to wait for the maintainers of the original repo to review and merge your pull request. They might also ask you for some feedback or changes before merging it. You can communicate with them through the comments section of your pull request.
+ 
